@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preact Example</title>
+  <link rel="stylesheet" href="main.css">
+  <script type="module">
+    import { html, render } from 'https://esm.sh/htm/preact/standalone'
+    import { getTopStats, getWinRate, getPlayers, isWinner  } from "./utils/helpers.js";
+    import { games } from "./utils/data.js";
+    import { playersColors } from "./utils/models.js";
+
+    function LastGamesWidget() {
+      const players = getPlayers();
+      const last3Games = games.slice(-3).reverse();
+
+      return html`
+        <h3>Останні матчі</h3>
+        <div class="last-games">
+          <div class="last-games__row">
+            ${players.map((player => html`
+              <span class="last-games__cell" style="color: ${playersColors[player]}">
+                ${player}
+              </span>
+            `))}
+          </div>
+          ${last3Games.map((game => html`
+              <div class="last-games__row">
+                ${players.map((player) => {
+                  const {corporation, VP} = game.find(({name}) => name === player) || {};
+
+                  return corporation && VP
+                    ? html`
+                      <div class="last-games__cell ${isWinner(game, player) ? 'winner' : ''}">
+                        <div class="last-games__corp">
+                          ${ corporation || '-' }
+                        </div>
+                        <div class="last-games__vp">
+                          ${ VP || '-' }
+                        </div>
+                      </div>
+                    `
+                    : html`
+                      <div class="last-games__cell">
+                        -
+                      </div>
+                    `;
+                })}
+              </div>
+            `
+          ))}
+        </div>
+      `;
+    }
+
+    // Render the App
+    render(html`<${LastGamesWidget} />`, document.getElementById('lastGames'));
+  </script>
+</head>
+<body>
+  <div class="app">
+    <div class="logo"></div>
+    <div class="grid">
+      <div style="grid-area: lastGames;" class="grid__widget" id="lastGames">
+        <!-- Last 3 games widget -->
+      </div>
+      <div style="grid-area: players" class="grid__widget">
+        <!-- Players winstat widget -->
+        <h3>Гравці</h3>
+        <div class="chart-box">
+        </div>
+      </div>
+      <div style="grid-area: topScore" class="grid__widget">
+        <!-- Top score widget -->
+        <h3>Рекорд</h3>
+        <div class="top-score">
+        </div>
+      </div>
+      <div style="grid-area: corporations" class="grid__widget">
+        <!-- Corporations widget -->
+        <h3>Корпорації</h3>
+        <div class="chart-box">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

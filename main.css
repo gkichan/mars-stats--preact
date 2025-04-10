@@ -1,0 +1,174 @@
+html {
+  --primaryColor: rgb(100, 197, 166);
+}
+
+@media (max-width: 1367px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1281px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  color: rgb(240,243,242);
+  background-image: url('./assets/app-bg.webp');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.75;
+    background-color: #000;
+    z-index: 1;
+  }
+}
+
+.app {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.logo {
+  display: flex;
+  margin-block: max(3vh, 16px);
+  width: 300px;
+  height: 8vh;
+  align-self: center;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('./assets/logo.png');
+}
+.text-content {
+  font-size: 1.3em;
+}
+.ta-center {
+  text-align: center;
+}
+.grid {
+  display: grid;
+  grid-template-areas: 'lastGames players topScore' 'corporations corporations corporations';
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 8px;
+  margin: 16px;
+  flex-grow: 1;
+}
+.grid__widget {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+  border: 2px double var(--primaryColor);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.grid__widget h3 {
+  margin: 0;
+  color: var(--primaryColor);
+  padding-bottom: 16px;
+}
+.grid__widget .last-games {
+  margin-block: auto;
+}
+.grid__widget .last-games__row {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  height: 60px;
+}
+.grid__widget .last-games__row:nth-child(2n) {
+  background-color: rgba(100, 197, 166, 0.15);
+}
+.grid__widget .last-games__row:first-child .last-games__cell {
+  font-size: 1.3em;
+}
+.grid__widget .last-games__row:not(:first-child) .last-games__cell {
+  opacity: 0.8;
+  font-size: 1.1em;
+}
+.grid__widget .last-games__row:not(:first-child) .last-games__cell.winner {
+  opacity: 1;
+  font-weight: bold;
+}
+.grid__widget .last-games__cell {
+  text-align: center;
+  padding-block: 8px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 10px;
+  justify-self: center;
+  align-items: center;
+  width: min-content;
+}
+.grid__widget .last-games__corp {
+  color: var(--primaryColor);
+}
+.grid__widget .chart-box {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: 1fr;
+  grid-auto-columns: 1fr;
+  padding: 8px;
+  overflow: auto;
+}
+.grid__widget .chart-box .column {
+  padding-inline: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  grid-gap: 8px;
+}
+.grid__widget .chart-box .column__data-viz {
+  width: 16px;
+}
+.grid__widget .top-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: space-evenly;
+  padding-bottom: 24px;
+  grid-gap: 8px;
+}
+.grid__widget .top-score__names {
+  font-size: 2em;
+}
+.grid__widget .top-score__number {
+  font-size: 3em;
+  font-weight: bold;
+}
+@media (max-width: 1279px) {
+  .grid {
+    display: flex;
+    flex-direction: column;
+ }
+}
+::-webkit-scrollbar {
+  width: 4px;
+  border: 1px solid rgb(100, 197, 166);
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: rgb(100, 197, 166);
+}
+::-webkit-scrollbar-track {
+  border-radius: 0;
+  background: rgba(100, 197, 166, 0.15);
+}
