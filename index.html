@@ -9,7 +9,7 @@
     import { html, render } from 'https://esm.sh/htm/preact/standalone'
     import { getTopStats, getWinRate, getPlayers, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./utils/helpers.js";
     import { games } from "./utils/data.js";
-    import { playersColors } from "./utils/models.js";
+    import { playersColors, primaryColor  } from "./utils/models.js";
 
     // Widgets
 
@@ -76,6 +76,26 @@
       `;
     }
 
+    function TopScoreWidget() {
+      const { topPlayer, topScore } = getTopStats(games);
+
+      return html`
+        <h3>Рекорд</h3>
+        <div class="top-score">
+          <div class="top-score__names">
+            <span style='color: ${playersColors[topPlayer.name]}'>
+              ${topPlayer.name}
+            </span> + <span style='color: ${primaryColor}'>
+              ${topPlayer.corporation}
+            </span>
+          </div>
+          <div class="top-score__number">
+            ${ topScore }
+          </div>
+        </div>
+      `;
+    }
+
     // Reusable components
 
     function Column({name, color, winRate, won, played}) {
@@ -101,6 +121,7 @@
 
     render(html`<${LastGamesWidget} />`, document.getElementById('lastGames'));
     render(html`<${PlayersWinstatWidget} />`, document.getElementById('playersWinstat'));
+    render(html`<${TopScoreWidget} />`, document.getElementById('topScore'));
   </script>
 </head>
 <body>
@@ -113,11 +134,8 @@
       <div style="grid-area: players" class="grid__widget" id="playersWinstat">
         <!-- Players winstata widget -->
       </div>
-      <div style="grid-area: topScore" class="grid__widget">
+      <div style="grid-area: topScore" class="grid__widget" id="topScore">
         <!-- Top score widget -->
-        <h3>Рекорд</h3>
-        <div class="top-score">
-        </div>
       </div>
       <div style="grid-area: corporations" class="grid__widget">
         <!-- Corporations widget -->
