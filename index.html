@@ -7,9 +7,11 @@
   <link rel="stylesheet" href="main.css">
   <script type="module">
     import { html, render } from 'https://esm.sh/htm/preact/standalone'
-    import { getTopStats, getWinRate, getPlayers, isWinner  } from "./utils/helpers.js";
+    import { getTopStats, getWinRate, getPlayers, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./utils/helpers.js";
     import { games } from "./utils/data.js";
     import { playersColors } from "./utils/models.js";
+
+    // Widgets
 
     function LastGamesWidget() {
       const players = getPlayers();
@@ -54,8 +56,51 @@
       `;
     }
 
-    // Render the App
+    function PlayersWinstatWidget() {
+      const playersSortedByWinRate = sortByWinRate(getPlayers());
+
+      return html`
+        <h3>Гравці</h3>
+        <div class="chart-box">
+          ${playersSortedByWinRate.map((player) => {
+            return html`
+              <${Column} name=${player}
+                         color=${playersColors[player]}
+                         winRate=${getWinRate(player)}
+                         won=${gamesWon(player)}
+                         played=${gamesPlayed(player)}
+              />
+            `;
+          })}
+        </div>
+      `;
+    }
+
+    // Reusable components
+
+    function Column({name, color, winRate, won, played}) {
+      const height = winRate * 2.5;
+
+      return html`
+        <div class="column">
+          <div class="text-content ta-center" style="color: ${color}">
+            ${ name }
+          </div>
+          <div class="column__data-viz" style="background-color: ${color}; height: ${height}px"></div>
+          <div class="text-content">
+            ${ winRate }%
+          </div>
+          <div class="text-content">
+            ${ won } / ${ played }
+          </div>
+        </div>
+      `
+    }
+
+    // Rendering
+
     render(html`<${LastGamesWidget} />`, document.getElementById('lastGames'));
+    render(html`<${PlayersWinstatWidget} />`, document.getElementById('playersWinstat'));
   </script>
 </head>
 <body>
@@ -65,11 +110,8 @@
       <div style="grid-area: lastGames;" class="grid__widget" id="lastGames">
         <!-- Last 3 games widget -->
       </div>
-      <div style="grid-area: players" class="grid__widget">
-        <!-- Players winstat widget -->
-        <h3>Гравці</h3>
-        <div class="chart-box">
-        </div>
+      <div style="grid-area: players" class="grid__widget" id="playersWinstat">
+        <!-- Players winstata widget -->
       </div>
       <div style="grid-area: topScore" class="grid__widget">
         <!-- Top score widget -->

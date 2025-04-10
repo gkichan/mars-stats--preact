@@ -1481,5 +1481,22 @@ export const games = [
       corporation: Corporation.Splice,
       VP: 55
     }
+  ],
+  [
+    {
+      name: PlayerName.Viktor,
+      corporation: Corporation.Celestic,
+      VP: 70
+    },
+    {
+      name: PlayerName.Eugene,
+      corporation: Corporation.ThorGate,
+      VP: 65
+    },
+    {
+      name: PlayerName.Karina,
+      corporation: Corporation.Aphrodite,
+      VP: 71
+    }
   ]
 ];
