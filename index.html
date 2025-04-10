@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="main.css">
   <script type="module">
     import { html, render } from 'https://esm.sh/htm/preact/standalone'
-    import { getTopStats, getWinRate, getPlayers, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./utils/helpers.js";
+    import { getTopStats, getWinRate, getPlayers, getCorporations, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./utils/helpers.js";
     import { games } from "./utils/data.js";
     import { playersColors, primaryColor  } from "./utils/models.js";
 
@@ -85,13 +85,35 @@
           <div class="top-score__names">
             <span style='color: ${playersColors[topPlayer.name]}'>
               ${topPlayer.name}
-            </span> + <span style='color: ${primaryColor}'>
+            </span>
+            ${'\u00A0'}+${'\u00A0'}
+            <span style='color: ${primaryColor}'>
               ${topPlayer.corporation}
             </span>
           </div>
           <div class="top-score__number">
             ${ topScore }
           </div>
+        </div>
+      `;
+    }
+
+    function CorporationsWidget() {
+      const corporationsSortedByWinRate = sortByWinRate(getCorporations());
+
+      return html`
+        <h3>Корпорації</h3>
+        <div class="chart-box">
+          ${corporationsSortedByWinRate.map((corporation) => {
+            return html`
+              <${Column} name=${corporation}
+                         color=${primaryColor}
+                         winRate=${getWinRate(corporation)}
+                         won=${gamesWon(corporation)}
+                         played=${gamesPlayed(corporation)}
+              />
+            `;
+          })}
         </div>
       `;
     }
@@ -122,6 +144,7 @@
     render(html`<${LastGamesWidget} />`, document.getElementById('lastGames'));
     render(html`<${PlayersWinstatWidget} />`, document.getElementById('playersWinstat'));
     render(html`<${TopScoreWidget} />`, document.getElementById('topScore'));
+    render(html`<${CorporationsWidget} />`, document.getElementById('corporations'));
   </script>
 </head>
 <body>
@@ -137,11 +160,8 @@
       <div style="grid-area: topScore" class="grid__widget" id="topScore">
         <!-- Top score widget -->
       </div>
-      <div style="grid-area: corporations" class="grid__widget">
+      <div style="grid-area: corporations" class="grid__widget" id="corporations">
         <!-- Corporations widget -->
-        <h3>Корпорації</h3>
-        <div class="chart-box">
-        </div>
       </div>
     </div>
   </div>
