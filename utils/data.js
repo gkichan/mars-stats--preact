@@ -1498,5 +1498,22 @@ export const games = [
       corporation: Corporation.Aphrodite,
       VP: 71
     }
+  ],
+  [
+    {
+      name: PlayerName.Viktor,
+      corporation: Corporation.Tharsis,
+      VP: 85
+    },
+    {
+      name: PlayerName.Eugene,
+      corporation: Corporation.ManuTech,
+      VP: 73
+    },
+    {
+      name: PlayerName.Karina,
+      corporation: Corporation.EcoLine,
+      VP: 72
+    }
   ]
 ];
