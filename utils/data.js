@@ -1532,5 +1532,22 @@ export const games = [
       corporation: Corporation.PharmacyUnion,
       VP: 63
     }
+  ],
+  [
+    {
+      name: PlayerName.Viktor,
+      corporation: Corporation.Celestic,
+      VP: 79
+    },
+    {
+      name: PlayerName.Eugene,
+      corporation: Corporation.ArcadianCommunities,
+      VP: 84
+    },
+    {
+      name: PlayerName.Karina,
+      corporation: Corporation.EcoLine,
+      VP: 53
+    }
   ]
 ];
