@@ -12,6 +12,25 @@
     import { games } from "./utils/data.js";
     import { playersColors, primaryColor  } from "./utils/models.js";
 
+    // Backend integration sandbox
+    const url = 'http://localhost:3000/games';
+    async function getGames() {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+    
+    const nodeGames = await getGames()
+    console.log(nodeGames);
+    
+
     // Widgets
 
     function LastGamesWidget() {
@@ -19,7 +38,10 @@
       const last3Games = games.slice(-3).reverse();
 
       return html`
-        <h3>Останні матчі</h3>
+        <div class="position-rel">
+          <h3>Останні матчі</h3>
+          <a class="btn-plus">+</a>
+        </div>
         <div class="last-games">
           <div class="last-games__row">
             ${players.map((player => html`
@@ -148,7 +170,7 @@
     render(html`<${CorporationsWidget} />`, document.getElementById('corporations'));
   </script>
 </head>
-<body>
+<body> 
   <div class="app">
     <div class="logo"></div>
     <div class="grid">

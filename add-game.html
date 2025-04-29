@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="assets/favicon-16x16.png" type="image/x-icon">
+  <title>MarsStats</title>
+  <style type="text/css">
+    html {
+      --cds-button-primary: rgb(100, 197, 166);
+      --cds-button-primary-hover: rgb(85, 168, 142);
+    }
+   </style>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.28.0/button.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/dropdown.min.js"></script>
+  <style type="text/css">
+    cds-dropdown:not(:defined),
+    cds-dropdown-item:not(:defined) {
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+  <cds-button>
+    Button
+  </cds-button>
+  <cds-dropdown trigger-content="Select an item">
+    <cds-dropdown-item value="all">Option 1</cds-dropdown-item>
+    <cds-dropdown-item value="cloudFoundry">Option 2</cds-dropdown-item>
+    <cds-dropdown-item value="staging">Option 3</cds-dropdown-item>
+    <cds-dropdown-item value="dea">Option 4</cds-dropdown-item>
+    <cds-dropdown-item value="router">Option 5</cds-dropdown-item>
+  </cds-dropdown>
+</body>
+</html>
