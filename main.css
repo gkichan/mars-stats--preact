@@ -1,6 +1,7 @@
 html {
   --primaryColor: rgb(100, 197, 166);
   --primaryHoverColor: rgb(85, 168, 142);
+  --primaryActiveColor: rgb(69, 138, 116);
 }
 
 @media (max-width: 1367px) {
@@ -18,7 +19,7 @@ html {
 body {
   margin: 0;
   font-family: sans-serif;
-  color: rgb(240,243,242);
+  color: rgb(240, 243, 242);
   background-image: url('./assets/app-bg.webp');
   background-position: center center;
   background-size: cover;
@@ -159,7 +160,7 @@ body {
   .grid {
     display: flex;
     flex-direction: column;
- }
+  }
 }
 ::-webkit-scrollbar {
   width: 4px;
@@ -190,6 +191,9 @@ body {
 }
 .btn-plus:hover {
   color: var(--primaryHoverColor);
+}
+.btn-plus:focus-visible {
+  outline: var(--primaryActiveColor) auto 1px;
 }
 .position-rel {
   position: relative;

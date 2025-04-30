@@ -1,192 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="assets/favicon-16x16.png" type="image/x-icon">
-  <title>MarsStats</title>
-  <link rel="stylesheet" href="main.css">
-  <script type="module">
-    import { html, render } from 'https://esm.sh/htm/preact/standalone'
-    import { getTopStats, getWinRate, getPlayers, getCorporations, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./utils/helpers.js";
-    import { games } from "./utils/data.js";
-    import { playersColors, primaryColor  } from "./utils/models.js";
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="assets/favicon-16x16.png" type="image/x-icon" />
+    <title>MarsStats</title>
 
-    // Backend integration sandbox
-    const url = 'http://localhost:3000/games';
-    async function getGames() {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
+    <link rel="stylesheet" href="main.css" />
+
+    <!-- Carbon Web Components -->
+    <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/web-components/tag/next/themes.css" />
+    <link rel="stylesheet" href="cds-custom.css" />
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.28.0/modal.min.js"></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/dropdown.min.js"></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.28.0/number-input.min.js"></script>
+
+    <script type="module">
+      import { html, render } from "https://esm.sh/htm/preact/standalone";
+      import { getTopStats, getWinRate, getPlayers, getCorporations, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./utils/helpers.js";
+      import { games } from "./utils/data.js";
+      import { playersColors, primaryColor } from "./utils/models.js";
+
+      // Backend integration sandbox
+      const url = "http://localhost:3000/games";
+      async function getGames() {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+
+          return await response.json();
+        } catch (error) {
+          console.error(error.message);
         }
-
-        return await response.json();
-      } catch (error) {
-        console.error(error.message);
       }
-    }
-    
-    const nodeGames = await getGames()
-    console.log(nodeGames);
-    
 
-    // Widgets
+      // const nodeGames = await getGames()
+      // console.log(nodeGames);
 
-    function LastGamesWidget() {
-      const players = getPlayers();
-      const last3Games = games.slice(-3).reverse();
+      // Modal
+      function openModal() {
+        console.log("open modal");
+        document.querySelector("cds-modal")?.toggleAttribute("open");
+        render(html`<${Modal} />`, document.getElementById("newGameModal"));
+      }
 
-      return html`
+      function Modal() {
+        return html`
+          <cds-modal-header>
+            <cds-modal-heading>Додати нову гру</cds-modal-heading>
+          </cds-modal-header>
+          <cds-modal-body>
+            <div>
+              <cds-dropdown title-text="Гравці" label="Оберіть гравця зі списку">
+                ${getPlayers().map((player) => html`<cds-dropdown-item value=${player}>${player}</cds-dropdown-item>`)}
+              </cds-dropdown>
+              <cds-dropdown title-text="Корпорації" label="Оберіть корпорацію зі списку">
+                ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
+              </cds-dropdown>
+              <cds-number-input value="0" max="999" min="0" label="VP" size="md" hide-steppers></cds-number-input>
+            </div>
+            <div>
+              <cds-dropdown title-text="Гравці" label="Оберіть гравця зі списку">
+                ${getPlayers().map((player) => html`<cds-dropdown-item value=${player}>${player}</cds-dropdown-item>`)}
+              </cds-dropdown>
+              <cds-dropdown title-text="Корпорації" label="Оберіть корпорацію зі списку">
+                ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
+              </cds-dropdown>
+              <cds-number-input value="0" max="999" min="0" label="VP" size="md" hide-steppers></cds-number-input>
+            </div>
+            <div>
+              <cds-dropdown title-text="Гравці" label="Оберіть гравця зі списку">
+                ${getPlayers().map((player) => html`<cds-dropdown-item value=${player}>${player}</cds-dropdown-item>`)}
+              </cds-dropdown>
+              <cds-dropdown title-text="Корпорації" label="Оберіть корпорацію зі списку">
+                ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
+              </cds-dropdown>
+              <cds-number-input value="0" max="999" min="0" label="VP" size="md" hide-steppers></cds-number-input>
+            </div>
+          </cds-modal-body>
+          <cds-modal-footer>
+            <cds-modal-footer-button data-modal-primary-focus kind="secondary" data-modal-close>Cancel</cds-modal-footer-button>
+            <cds-modal-footer-button kind="primary">Save</cds-modal-footer-button>
+          </cds-modal-footer>
+        `;
+      }
+
+      // Widgets
+
+      function LastGamesWidget() {
+        const players = getPlayers();
+        const last3Games = games.slice(-3).reverse();
+
+        return html`
         <div class="position-rel">
           <h3>Останні матчі</h3>
-          <a class="btn-plus">+</a>
+          <button class="btn-plus" onClick=${openModal}>+</a>
         </div>
         <div class="last-games">
           <div class="last-games__row">
-            ${players.map((player => html`
-              <span class="last-games__cell" style="color: ${playersColors[player]}">
-                ${player}
-              </span>
-            `))}
+            ${players.map((player) => html` <span class="last-games__cell" style="color: ${playersColors[player]}"> ${player} </span> `)}
           </div>
-          ${last3Games.map((game => html`
+          ${last3Games.map(
+            (game) => html`
               <div class="last-games__row">
                 ${players.map((player) => {
-                  const {corporation, VP} = game.find(({name}) => name === player) || {};
+                  const { corporation, VP } = game.find(({ name }) => name === player) || {};
 
                   return corporation && VP
                     ? html`
-                      <div class="last-games__cell ${isWinner(game, player) ? 'winner' : ''}">
-                        <div class="last-games__corp">
-                          ${ corporation || '-' }
+                        <div class="last-games__cell ${isWinner(game, player) ? "winner" : ""}">
+                          <div class="last-games__corp">${corporation || "-"}</div>
+                          <div class="last-games__vp">${VP || "-"}</div>
                         </div>
-                        <div class="last-games__vp">
-                          ${ VP || '-' }
-                        </div>
-                      </div>
-                    `
-                    : html`
-                      <div class="last-games__cell">
-                        -
-                      </div>
-                    `;
+                      `
+                    : html` <div class="last-games__cell">-</div> `;
                 })}
               </div>
             `
-          ))}
+          )}
         </div>
       `;
-    }
+      }
 
-    function PlayersWinstatWidget() {
-      const playersSortedByWinRate = sortByWinRate(getPlayers());
+      function PlayersWinstatWidget() {
+        const playersSortedByWinRate = sortByWinRate(getPlayers());
 
-      return html`
-        <h3>Гравці</h3>
-        <div class="chart-box">
-          ${playersSortedByWinRate.map((player) => {
-            return html`
-              <${Column} name=${player}
-                         color=${playersColors[player]}
-                         winRate=${getWinRate(player)}
-                         won=${gamesWon(player)}
-                         played=${gamesPlayed(player)}
-              />
-            `;
-          })}
+        return html`
+          <h3>Гравці</h3>
+          <div class="chart-box">
+            ${playersSortedByWinRate.map((player) => {
+              return html`
+                <${Column} name=${player} color=${playersColors[player]} winRate=${getWinRate(player)} won=${gamesWon(player)} played=${gamesPlayed(player)} />
+              `;
+            })}
+          </div>
+        `;
+      }
+
+      function TopScoreWidget() {
+        const { topPlayer, topScore } = getTopStats(games);
+
+        return html`
+          <h3>Рекорд</h3>
+          <div class="top-score">
+            <div class="top-score__names">
+              <span style="color: ${playersColors[topPlayer.name]}"> ${topPlayer.name} </span>
+              ${"\u00A0"}+${"\u00A0"}
+              <span style="color: ${primaryColor}"> ${topPlayer.corporation} </span>
+            </div>
+            <div class="top-score__number">${topScore}</div>
+          </div>
+        `;
+      }
+
+      function CorporationsWidget() {
+        const corporationsSortedByWinRate = sortByWinRate(getCorporations());
+
+        return html`
+          <h3>Корпорації</h3>
+          <div class="chart-box">
+            ${corporationsSortedByWinRate.map((corporation) => {
+              return html`
+                <${Column}
+                  name=${corporation}
+                  color=${primaryColor}
+                  winRate=${getWinRate(corporation)}
+                  won=${gamesWon(corporation)}
+                  played=${gamesPlayed(corporation)}
+                />
+              `;
+            })}
+          </div>
+        `;
+      }
+
+      // Reusable components
+
+      function Column({ name, color, winRate, won, played }) {
+        const height = winRate * 2.5;
+
+        return html`
+          <div class="column">
+            <div class="text-content ta-center" style="color: ${color}">${name}</div>
+            <div class="column__data-viz" style="background-color: ${color}; height: ${height}px"></div>
+            <div class="text-content">${winRate}%</div>
+            <div class="text-content">${won} / ${played}</div>
+          </div>
+        `;
+      }
+
+      // Rendering
+
+      render(html`<${LastGamesWidget} />`, document.getElementById("lastGames"));
+      render(html`<${PlayersWinstatWidget} />`, document.getElementById("playersWinstat"));
+      render(html`<${TopScoreWidget} />`, document.getElementById("topScore"));
+      render(html`<${CorporationsWidget} />`, document.getElementById("corporations"));
+    </script>
+  </head>
+  <body>
+    <div class="app">
+      <div class="logo"></div>
+      <div class="grid">
+        <div style="grid-area: lastGames" class="grid__widget" id="lastGames">
+          <!-- Last 3 games widget -->
         </div>
-      `;
-    }
-
-    function TopScoreWidget() {
-      const { topPlayer, topScore } = getTopStats(games);
-
-      return html`
-        <h3>Рекорд</h3>
-        <div class="top-score">
-          <div class="top-score__names">
-            <span style='color: ${playersColors[topPlayer.name]}'>
-              ${topPlayer.name}
-            </span>
-            ${'\u00A0'}+${'\u00A0'}
-            <span style='color: ${primaryColor}'>
-              ${topPlayer.corporation}
-            </span>
-          </div>
-          <div class="top-score__number">
-            ${ topScore }
-          </div>
+        <div style="grid-area: players" class="grid__widget" id="playersWinstat">
+          <!-- Players winstata widget -->
         </div>
-      `;
-    }
-
-    function CorporationsWidget() {
-      const corporationsSortedByWinRate = sortByWinRate(getCorporations());
-
-      return html`
-        <h3>Корпорації</h3>
-        <div class="chart-box">
-          ${corporationsSortedByWinRate.map((corporation) => {
-            return html`
-              <${Column} name=${corporation}
-                         color=${primaryColor}
-                         winRate=${getWinRate(corporation)}
-                         won=${gamesWon(corporation)}
-                         played=${gamesPlayed(corporation)}
-              />
-            `;
-          })}
+        <div style="grid-area: topScore" class="grid__widget" id="topScore">
+          <!-- Top score widget -->
         </div>
-      `;
-    }
-
-    // Reusable components
-
-    function Column({name, color, winRate, won, played}) {
-      const height = winRate * 2.5;
-
-      return html`
-        <div class="column">
-          <div class="text-content ta-center" style="color: ${color}">
-            ${ name }
-          </div>
-          <div class="column__data-viz" style="background-color: ${color}; height: ${height}px"></div>
-          <div class="text-content">
-            ${ winRate }%
-          </div>
-          <div class="text-content">
-            ${ won } / ${ played }
-          </div>
+        <div style="grid-area: corporations" class="grid__widget" id="corporations">
+          <!-- Corporations widget -->
         </div>
-      `
-    }
-
-    // Rendering
-
-    render(html`<${LastGamesWidget} />`, document.getElementById('lastGames'));
-    render(html`<${PlayersWinstatWidget} />`, document.getElementById('playersWinstat'));
-    render(html`<${TopScoreWidget} />`, document.getElementById('topScore'));
-    render(html`<${CorporationsWidget} />`, document.getElementById('corporations'));
-  </script>
-</head>
-<body> 
-  <div class="app">
-    <div class="logo"></div>
-    <div class="grid">
-      <div style="grid-area: lastGames;" class="grid__widget" id="lastGames">
-        <!-- Last 3 games widget -->
-      </div>
-      <div style="grid-area: players" class="grid__widget" id="playersWinstat">
-        <!-- Players winstata widget -->
-      </div>
-      <div style="grid-area: topScore" class="grid__widget" id="topScore">
-        <!-- Top score widget -->
-      </div>
-      <div style="grid-area: corporations" class="grid__widget" id="corporations">
-        <!-- Corporations widget -->
       </div>
     </div>
-  </div>
-</body>
+
+    <cds-modal class="cds-theme-zone-g90" size="lg" id="newGameModal">
+      <!-- Modal -->
+    </cds-modal>
+  </body>
 </html>
