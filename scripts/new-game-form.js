@@ -1,6 +1,6 @@
 "use strict";
 import { html, render } from "https://esm.sh/htm/preact/standalone";
-import { getPlayers, getCorporations } from "./helpers.js";
+import { getPlayers, getCorporations } from "./stats-helpers.js";
 import { config } from "./config.js";
 
 const playersInGame = 3;
@@ -34,6 +34,7 @@ function onSubmit(event) {
     body: JSON.stringify(mappedData),
   })
     .then((response) => {
+      // TODO handle errors
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -66,6 +67,7 @@ function mapFormDataToGameObject(formData) {
 }
 
 function Modal() {
+  // TODO: add pending state on submit
   return html`
     <cds-modal-header>
       <cds-modal-heading>Додати нову гру</cds-modal-heading>

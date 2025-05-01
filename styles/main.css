@@ -20,14 +20,14 @@ body {
   margin: 0;
   font-family: sans-serif;
   color: rgb(240, 243, 242);
-  background-image: url('./assets/app-bg.webp');
+  background-image: url("../assets/app-bg.webp");
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100vh;
 
   &::after {
-    content: '';
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
@@ -55,7 +55,7 @@ body {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('./assets/logo.webp');
+  background-image: url("../assets/logo.webp");
 }
 .text-content {
   font-size: 1.3em;
@@ -65,7 +65,7 @@ body {
 }
 .grid {
   display: grid;
-  grid-template-areas: 'lastGames players topScore' 'corporations corporations corporations';
+  grid-template-areas: "lastGames players topScore" "corporations corporations corporations";
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 8px;
   margin: 16px;

@@ -1,6 +1,6 @@
 "use strict";
 import { html } from "https://esm.sh/htm/preact/standalone";
-import { getTopStats, getWinRate, getPlayers, getCorporations, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./helpers.js";
+import { getTopStats, getWinRate, getPlayers, getCorporations, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./stats-helpers.js";
 import { games } from "./data.js";
 import { playersColors, primaryColor } from "./models.js";
 import { openModal } from "./new-game-form.js";

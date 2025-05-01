@@ -6,19 +6,19 @@
     <link rel="shortcut icon" href="assets/favicon-16x16.png" type="image/x-icon" />
     <title>MarsStats</title>
 
-    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
 
     <!-- Carbon Web Components -->
     <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/web-components/tag/next/themes.css" />
-    <link rel="stylesheet" href="cds-custom.css" />
+    <link rel="stylesheet" href="./styles/cds-custom.css" />
     <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.28.0/modal.min.js"></script>
     <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/dropdown.min.js"></script>
     <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.28.0/number-input.min.js"></script>
 
     <script type="module">
       import { html, render } from "https://esm.sh/htm/preact/standalone";
-      import { config } from "./utils/config.js";
-      import { LastGamesWidget, PlayersWinstatWidget, TopScoreWidget, CorporationsWidget } from "./utils/widgets.js";
+      import { config } from "./scripts/config.js";
+      import { LastGamesWidget, PlayersWinstatWidget, TopScoreWidget, CorporationsWidget } from "./scripts/widgets.js";
 
       // Backend integration sandbox
       async function getGames() {
