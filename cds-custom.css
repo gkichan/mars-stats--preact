@@ -31,12 +31,12 @@ cds-modal cds-modal-footer cds-modal-footer-button .cds--btn:not(:focus) {
 cds-modal-body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  height: 60vh;
-  grid-gap: 16px;
-  padding: 16px;
+  padding: 16px 16px 48px 16px;
+  grid-gap: 32px;
+  height: 55vh;
 }
 
-cds-modal-body > div {
+cds-modal-body .form-column {
   display: flex;
   flex-direction: column;
   grid-gap: 8px;

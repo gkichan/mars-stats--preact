@@ -41,49 +41,61 @@
 
       // Modal
       function openModal() {
-        console.log("open modal");
-        document.querySelector("cds-modal")?.toggleAttribute("open");
-        render(html`<${Modal} />`, document.getElementById("newGameModal"));
+        const modalContainer = document.getElementById("newGameModal");
+
+        modalContainer.toggleAttribute("open");
+        modalContainer.innerHTML = "";
+        render(html`<${Modal} />`, modalContainer);
+        setTimeout(initCdsForm);
+      }
+
+      function onSubmit(event) {
+        console.log(event);
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+
+        console.log("Form submitted:", data);
+      }
+
+      function initCdsForm() {
+        const form = document.getElementById("newGameForm");
+        const button = form.querySelector('cds-modal-footer-button[type="submit"]');
+
+        button.addEventListener("click", () => {
+          form.dispatchEvent(new SubmitEvent("submit"));
+          // TODO close modal after submit
+        });
       }
 
       function Modal() {
+        const playersInGame = 3;
+
         return html`
           <cds-modal-header>
             <cds-modal-heading>Додати нову гру</cds-modal-heading>
           </cds-modal-header>
-          <cds-modal-body>
-            <div>
-              <cds-dropdown title-text="Гравці" label="Оберіть гравця зі списку">
-                ${getPlayers().map((player) => html`<cds-dropdown-item value=${player}>${player}</cds-dropdown-item>`)}
-              </cds-dropdown>
-              <cds-dropdown title-text="Корпорації" label="Оберіть корпорацію зі списку">
-                ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
-              </cds-dropdown>
-              <cds-number-input value="0" max="999" min="0" label="VP" size="md" hide-steppers></cds-number-input>
-            </div>
-            <div>
-              <cds-dropdown title-text="Гравці" label="Оберіть гравця зі списку">
-                ${getPlayers().map((player) => html`<cds-dropdown-item value=${player}>${player}</cds-dropdown-item>`)}
-              </cds-dropdown>
-              <cds-dropdown title-text="Корпорації" label="Оберіть корпорацію зі списку">
-                ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
-              </cds-dropdown>
-              <cds-number-input value="0" max="999" min="0" label="VP" size="md" hide-steppers></cds-number-input>
-            </div>
-            <div>
-              <cds-dropdown title-text="Гравці" label="Оберіть гравця зі списку">
-                ${getPlayers().map((player) => html`<cds-dropdown-item value=${player}>${player}</cds-dropdown-item>`)}
-              </cds-dropdown>
-              <cds-dropdown title-text="Корпорації" label="Оберіть корпорацію зі списку">
-                ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
-              </cds-dropdown>
-              <cds-number-input value="0" max="999" min="0" label="VP" size="md" hide-steppers></cds-number-input>
-            </div>
-          </cds-modal-body>
-          <cds-modal-footer>
-            <cds-modal-footer-button data-modal-primary-focus kind="secondary" data-modal-close>Cancel</cds-modal-footer-button>
-            <cds-modal-footer-button kind="primary">Save</cds-modal-footer-button>
-          </cds-modal-footer>
+          <form onSubmit=${onSubmit} method="post" id="newGameForm">
+            <cds-modal-body>
+              ${Array.from({ length: playersInGame }, (_, i) => i + 1).map((i) => {
+                return html`
+                  <div class="form-column">
+                    <cds-dropdown name="Player ${i}" title-text="Гравець ${i}">
+                      ${getPlayers().map((player) => html`<cds-dropdown-item value=${player}>${player}</cds-dropdown-item>`)}
+                    </cds-dropdown>
+                    <cds-dropdown name="Corporation ${i}" title-text="Корпорація ${i}">
+                      ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
+                    </cds-dropdown>
+                    <cds-number-input name="VP ${i}" value="0" max="999" min="0" label="VP ${i}" size="md" hide-steppers></cds-number-input>
+                  </div>
+                `;
+              })}
+            </cds-modal-body>
+            <cds-modal-footer>
+              <cds-modal-footer-button data-modal-primary-focus kind="secondary" data-modal-close>Cancel</cds-modal-footer-button>
+              <cds-modal-footer-button kind="primary" type="submit">Save</cds-modal-footer-button>
+            </cds-modal-footer>
+          </form>
         `;
       }
 
