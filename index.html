@@ -41,7 +41,7 @@
       // Rendering
       render(html`<${LastGamesWidget} games=${games} />`, document.getElementById("lastGames"));
       render(html`<${PlayersWinstatWidget} />`, document.getElementById("playersWinstat"));
-      render(html`<${TopScoreWidget} />`, document.getElementById("topScore"));
+      render(html`<${TopScoreWidget} games=${games} />`, document.getElementById("topScore"));
       render(html`<${CorporationsWidget} />`, document.getElementById("corporations"));
     </script>
   </head>

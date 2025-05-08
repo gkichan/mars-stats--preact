@@ -57,39 +57,33 @@ class Modal extends Component {
     });
   }
 
-  onSubmit(event) {
-    console.log(event, this);
+  async onSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
     const mappedData = this.mapFormDataToGameObject(data);
 
-    console.log("Form submitted:", data);
-    console.log("mapped data:", mappedData);
-
-    fetch(config.apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(mappedData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((updatedGamesList) => {
-        games.value = updatedGamesList;
-        this.manualResetFields();
-        toggleModal();
-      })
-      .catch((error) => {
-        // TODO handle errors
-        console.error("Error submitting form:", error);
-        alert("Failed to save the game. Please try again.");
+    try {
+      const response = await fetch(config.apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(mappedData),
       });
+
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.error || "An error occurred");
+      }
+
+      games.value = responseData;
+      this.manualResetFields();
+      toggleModal();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert(error || "Failed to save the game. Please try again.");
+    }
   }
 
   mapFormDataToGameObject(formData) {
