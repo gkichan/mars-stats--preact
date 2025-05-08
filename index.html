@@ -16,9 +16,10 @@
     <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.28.0/number-input.min.js"></script>
 
     <script type="module">
-      import { html, render } from "https://esm.sh/htm/preact/standalone";
+      import { html, render, signal } from "./scripts/deps.js";
       import { config } from "./scripts/config.js";
       import { LastGamesWidget, PlayersWinstatWidget, TopScoreWidget, CorporationsWidget } from "./scripts/widgets.js";
+      import { games } from "./scripts/state.js";
 
       // Backend integration sandbox
       async function getGames() {
@@ -34,11 +35,11 @@
         }
       }
 
-      // const nodeGames = await getGames()
-      // console.log(nodeGames);
+      games.value = await getGames();
+      console.log(games.value);
 
       // Rendering
-      render(html`<${LastGamesWidget} />`, document.getElementById("lastGames"));
+      render(html`<${LastGamesWidget} games=${games} />`, document.getElementById("lastGames"));
       render(html`<${PlayersWinstatWidget} />`, document.getElementById("playersWinstat"));
       render(html`<${TopScoreWidget} />`, document.getElementById("topScore"));
       render(html`<${CorporationsWidget} />`, document.getElementById("corporations"));
@@ -63,8 +64,8 @@
       </div>
     </div>
 
-    <cds-modal class="cds-theme-zone-g90" size="lg" id="newGameModal">
+    <div id="cds-modal-placeholder">
       <!-- Modal -->
-    </cds-modal>
+    </div>
   </body>
 </html>

@@ -1,12 +1,13 @@
 "use strict";
-import { html } from "https://esm.sh/htm/preact/standalone";
+import { html } from "./deps.js";
 import { getTopStats, getWinRate, getPlayers, getCorporations, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./stats-helpers.js";
 import { games } from "./data.js";
 import { playersColors, primaryColor } from "./models.js";
 import { openModal } from "./new-game-form.js";
 
-export function LastGamesWidget() {
+export function LastGamesWidget(props) {
   const players = getPlayers();
+  const games = props.games.value;
   const last3Games = games.slice(-3).reverse();
 
   return html`

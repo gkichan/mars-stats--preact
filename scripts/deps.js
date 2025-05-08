@@ -1,5 +1,5 @@
 "use strict";
-export { render } from "https://esm.sh/preact";
+export { render, Component } from "https://esm.sh/preact";
 export { signal } from "https://esm.sh/@preact/signals";
 
 import { h } from "https://esm.sh/preact";
