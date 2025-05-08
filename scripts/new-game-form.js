@@ -4,6 +4,8 @@ import { getPlayers, getCorporations } from "./stats-helpers.js";
 import { config } from "./config.js";
 import { games } from "./state.js";
 
+const newGameModal = "newGameModal";
+
 export function openModal() {
   const cdsModalPlaceholder = document.getElementById("cds-modal-placeholder");
   render(html`<${Modal} />`, cdsModalPlaceholder);
@@ -11,12 +13,10 @@ export function openModal() {
   toggleModal();
 }
 
-function getPlayersCounterArray() {
-  return Array.from({ length: config.playersInGame }, (_, i) => i + 1);
-}
+const playersCounterArray = Array.from({ length: config.playersInGame }, (_, i) => i + 1);
 
 function toggleModal() {
-  const modalContainer = document.getElementById("newGameModal");
+  const modalContainer = document.getElementById(newGameModal);
   modalContainer.toggleAttribute("open");
 }
 
@@ -26,6 +26,7 @@ class Modal extends Component {
     corporationTitleText: (i) => `Корпорація ${i}`,
     player: (i) => `Player ${i}`,
     playerTitleText: (i) => `Гравець ${i}`,
+    vp: (i) => `VP ${i}`,
   };
 
   componentDidMount() {
@@ -46,7 +47,7 @@ class Modal extends Component {
   }
 
   manualResetFields() {
-    const dropdownsToReset = getPlayersCounterArray().map((i) => this.formFields.corporationTitleText(i));
+    const dropdownsToReset = playersCounterArray.map((i) => this.formFields.corporationTitleText(i));
     const form = this.getFormElement();
 
     dropdownsToReset.forEach((element) => {
@@ -74,7 +75,6 @@ class Modal extends Component {
       body: JSON.stringify(mappedData),
     })
       .then((response) => {
-        // TODO handle errors
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -84,11 +84,16 @@ class Modal extends Component {
         games.value = updatedGamesList;
         this.manualResetFields();
         toggleModal();
+      })
+      .catch((error) => {
+        // TODO handle errors
+        console.error("Error submitting form:", error);
+        alert("Failed to save the game. Please try again.");
       });
   }
 
   mapFormDataToGameObject(formData) {
-    return getPlayersCounterArray().map((i) => {
+    return playersCounterArray.map((i) => {
       return {
         name: formData[this.formFields.player(i)],
         corporation: formData[this.formFields.corporation(i)],
@@ -100,14 +105,14 @@ class Modal extends Component {
   // TODO: add pending state on submit
   render() {
     return html`
-      <cds-modal class="cds-theme-zone-g90" size="lg" id="newGameModal" prevent-close-on-click-outside="true">
+      <cds-modal class="cds-theme-zone-g90" size="lg" id="${newGameModal}" prevent-close-on-click-outside="true">
         <cds-modal-header>
           <cds-modal-close-button></cds-modal-close-button>
           <cds-modal-heading>Додати нову гру</cds-modal-heading>
         </cds-modal-header>
         <form onSubmit=${this.onSubmit.bind(this)} method="post" id="newGameForm">
           <cds-modal-body>
-            ${getPlayersCounterArray().map((i) => {
+            ${playersCounterArray.map((i) => {
               return html`
                 <div class="form-column">
                   <cds-dropdown name="${this.formFields.player(i)}" title-text="Гравець ${i}" value="${getPlayers()[i - 1]}">
@@ -116,7 +121,7 @@ class Modal extends Component {
                   <cds-dropdown name="${this.formFields.corporation(i)}" title-text="Корпорація ${i}">
                     ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
                   </cds-dropdown>
-                  <cds-number-input name="VP ${i}" value="0" max="999" min="0" label="VP ${i}" size="md" hide-steppers></cds-number-input>
+                  <cds-number-input name="${this.formFields.vp(i)}" value="0" max="999" min="0" label="VP ${i}" size="md" hide-steppers></cds-number-input>
                 </div>
               `;
             })}
