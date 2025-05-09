@@ -96,7 +96,6 @@ class Modal extends Component {
     });
   }
 
-  // TODO: add pending state on submit
   render() {
     return html`
       <cds-modal class="cds-theme-zone-g90" size="lg" id="${newGameModal}" prevent-close-on-click-outside="true">

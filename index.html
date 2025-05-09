@@ -16,27 +16,24 @@
     <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.28.0/number-input.min.js"></script>
 
     <script type="module">
-      import { html, render, signal } from "./scripts/deps.js";
+      import { html, render } from "./scripts/deps.js";
       import { config } from "./scripts/config.js";
       import { LastGamesWidget, PlayersWinstatWidget, TopScoreWidget, CorporationsWidget } from "./scripts/widgets.js";
       import { games } from "./scripts/state.js";
 
-      // Backend integration sandbox
-      async function getGames() {
-        try {
-          const response = await fetch(config.apiUrl);
-          if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-          }
+      try {
+        const response = await fetch(config.apiUrl);
+        const responseData = await response.json();
 
-          return await response.json();
-        } catch (error) {
-          console.error(error.message);
+        if (!response.ok) {
+          throw new Error(responseData.error || "An error occurred");
         }
-      }
 
-      games.value = await getGames();
-      console.log(games.value);
+        games.value = responseData;
+      } catch (error) {
+        console.error(error);
+        alert(error || "Failed to get games list. Please try again.");
+      }
 
       // Rendering
       render(html`<${LastGamesWidget} games=${games} />`, document.getElementById("lastGames"));
