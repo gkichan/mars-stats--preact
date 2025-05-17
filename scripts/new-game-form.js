@@ -64,12 +64,13 @@ class Modal extends Component {
     const mappedData = this.mapFormDataToGameObject(data);
 
     try {
-      const response = await fetch(config.apiUrl, {
+      const response = await fetch(`${config.apiUrl}/games`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(mappedData),
+        credentials: "include",
       });
 
       const responseData = await response.json();

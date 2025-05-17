@@ -22,7 +22,7 @@
       import { games } from "./scripts/state.js";
 
       try {
-        const response = await fetch(config.apiUrl);
+        const response = await fetch(`${config.apiUrl}/games`);
         const responseData = await response.json();
 
         if (!response.ok) {
@@ -32,6 +32,7 @@
         games.value = responseData;
       } catch (error) {
         console.error(error);
+        games.value = [];
         alert(error || "Failed to get games list. Please try again.");
       }
 

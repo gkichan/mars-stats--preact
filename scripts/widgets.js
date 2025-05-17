@@ -3,6 +3,14 @@ import { html } from "./deps.js";
 import { getTopStats, getWinRate, getPlayers, getCorporations, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./stats-helpers.js";
 import { playersColors, primaryColor } from "./models.js";
 import { openModal } from "./new-game-form.js";
+import { config } from "./config.js";
+
+function SignIn() {
+  return html`<a href="${config.apiUrl}/auth/signin?callbackUrl=${encodeURIComponent(window.location.origin)}"> Sign in with GitHub</a>`;
+}
+function SignOut() {
+  return html`<a href="${config.apiUrl}/auth/signout"> Sign out from GitHub</a>`;
+}
 
 export function LastGamesWidget(props) {
   const players = getPlayers();
@@ -59,17 +67,19 @@ export function TopScoreWidget(props) {
   const games = props.games.value;
   const { topPlayer, topScore } = getTopStats(games);
 
-  return html`
-    <h3>Рекорд</h3>
-    <div class="top-score">
-      <div class="top-score__names">
-        <span style="color: ${playersColors[topPlayer.name]}"> ${topPlayer.name} </span>
-        ${"\u00A0"}+${"\u00A0"}
-        <span style="color: ${primaryColor}"> ${topPlayer.corporation} </span>
-      </div>
-      <div class="top-score__number">${topScore}</div>
-    </div>
-  `;
+  return topPlayer && topScore
+    ? html`
+        <h3>Рекорд</h3>
+        <div class="top-score">
+          <div class="top-score__names">
+            <span style="color: ${playersColors[topPlayer.name]}"> ${topPlayer.name} </span>
+            ${"\u00A0"}+${"\u00A0"}
+            <span style="color: ${primaryColor}"> ${topPlayer.corporation} </span>
+          </div>
+          <div class="top-score__number">${topScore}</div>
+        </div>
+      `
+    : html` <h3>Рекорд</h3>`;
 }
 
 export function CorporationsWidget() {
