@@ -1,0 +1,43 @@
+.cds-theme-zone-g90 {
+  --cds-button-primary: var(--primaryColor);
+  --cds-button-primary-hover: var(--primaryHoverColor);
+  --cds-button-focus-color: var(--primaryColor);
+  --cds-focus: var(--primaryColor);
+  --cds-button-primary-active: var(--primaryActiveColor);
+  --cds-button-separator: transparent;
+  --cds-text-primary: var(--primaryColor);
+  --cds-text-secondary: var(--primaryColor);
+}
+
+cds-modal {
+  --cds-text-primary: var(--primaryColor);
+}
+
+cds-modal-header,
+cds-modal-body,
+cds-modal-footer {
+  background: rgba(0, 0, 0, 0.8);
+  margin: 0;
+}
+
+.cds--btn:focus {
+  box-shadow: inset 0 0 0 1px var(--cds-focus, #0f62fe);
+}
+cds-modal cds-modal-footer cds-modal-footer-button .cds--btn,
+cds-modal cds-modal-footer cds-modal-footer-button .cds--btn:not(:focus) {
+  box-shadow: none;
+}
+
+cds-modal-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 16px 16px 48px 16px;
+  grid-gap: 32px;
+  height: 55vh;
+}
+
+cds-modal-body .form-column {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 8px;
+}
