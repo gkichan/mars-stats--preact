@@ -7,6 +7,7 @@ import { config } from "./config.js";
 
 function SignIn() {
   return html`<a href="${config.apiUrl}/auth/signin/github?callbackUrl=${encodeURIComponent(window.location.origin)}/mars-stats--preact/">Sign in</a>`;
+}
 function SignOut() {
   return html`<a href="${config.apiUrl}/auth/signout">Sign out</a>`;
 }
