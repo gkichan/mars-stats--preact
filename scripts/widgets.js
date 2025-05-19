@@ -8,9 +8,6 @@ import { config } from "./config.js";
 function SignIn() {
   return html`<a href="${config.apiUrl}/auth/signin?callbackUrl=${encodeURIComponent(window.location.origin + "/mars-stats--preact/")}">Sign in</a>`;
 }
-function SignOut() {
-  return html`<a href="${config.apiUrl}/auth/signout">Sign out</a>`;
-}
 
 export function LastGamesWidget(props) {
   const players = getPlayers();
@@ -21,7 +18,7 @@ export function LastGamesWidget(props) {
   return html`
     <div class="position-rel">
       <h3>Останні матчі</h3>
-      ${isAuthenticated ? html`<button class="btn-plus" onClick=${openModal}>+</button>${SignOut()}` : SignIn()}
+      ${isAuthenticated ? html`<button class="btn-plus" onClick=${openModal}>+</button>` : SignIn()}
     </div>
     <div class="last-games">
       <div class="last-games__row">
