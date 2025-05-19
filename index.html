@@ -21,6 +21,14 @@
       import { LastGamesWidget, PlayersWinstatWidget, TopScoreWidget, CorporationsWidget } from "./scripts/widgets.js";
       import { games } from "./scripts/state.js";
 
+      async function isAuthenticated() {
+        const response = await fetch(`${config.apiUrl}/is-authenticated`, {
+          credentials: "include",
+        });
+        const responseData = await response.json();
+        return responseData.authenticated;
+      }
+
       try {
         const response = await fetch(`${config.apiUrl}/games`);
         const responseData = await response.json();
@@ -37,7 +45,7 @@
       }
 
       // Rendering
-      render(html`<${LastGamesWidget} games=${games} />`, document.getElementById("lastGames"));
+      render(html`<${LastGamesWidget} games=${games} isAuthenticated=${await isAuthenticated()} />`, document.getElementById("lastGames"));
       render(html`<${PlayersWinstatWidget} />`, document.getElementById("playersWinstat"));
       render(html`<${TopScoreWidget} games=${games} />`, document.getElementById("topScore"));
       render(html`<${CorporationsWidget} />`, document.getElementById("corporations"));

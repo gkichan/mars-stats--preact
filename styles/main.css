@@ -39,6 +39,15 @@ body {
   }
 }
 
+a {
+  color: var(--primaryColor);
+  margin-inline: 4px;
+}
+
+a:hover {
+  color: var(--primaryHoverColor);
+}
+
 .app {
   position: relative;
   z-index: 2;

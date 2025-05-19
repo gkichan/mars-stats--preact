@@ -6,46 +6,47 @@ import { openModal } from "./new-game-form.js";
 import { config } from "./config.js";
 
 function SignIn() {
-  return html`<a href="${config.apiUrl}/auth/signin?callbackUrl=${encodeURIComponent(window.location.origin)}"> Sign in with GitHub</a>`;
+  return html`<a href="${config.apiUrl}/auth/signin?callbackUrl=${encodeURIComponent(window.location.origin)}">Sign in</a>`;
 }
 function SignOut() {
-  return html`<a href="${config.apiUrl}/auth/signout"> Sign out from GitHub</a>`;
+  return html`<a href="${config.apiUrl}/auth/signout">Sign out</a>`;
 }
 
 export function LastGamesWidget(props) {
   const players = getPlayers();
   const games = props.games.value;
   const last3Games = games.slice(-3).reverse();
+  const isAuthenticated = props.isAuthenticated;
 
   return html`
-  <div class="position-rel">
-    <h3>Останні матчі</h3>
-    <button class="btn-plus" onClick=${openModal}>+</a>
-  </div>
-  <div class="last-games">
-    <div class="last-games__row">
-      ${players.map((player) => html` <span class="last-games__cell" style="color: ${playersColors[player]}"> ${player} </span> `)}
+    <div class="position-rel">
+      <h3>Останні матчі</h3>
+      ${isAuthenticated ? html`<button class="btn-plus" onClick=${openModal}>+</button>${SignOut()}` : SignIn()}
     </div>
-    ${last3Games.map(
-      (game) => html`
-        <div class="last-games__row">
-          ${players.map((player) => {
-            const { corporation, VP } = game.find(({ name }) => name === player) || {};
+    <div class="last-games">
+      <div class="last-games__row">
+        ${players.map((player) => html` <span class="last-games__cell" style="color: ${playersColors[player]}"> ${player} </span> `)}
+      </div>
+      ${last3Games.map(
+        (game) => html`
+          <div class="last-games__row">
+            ${players.map((player) => {
+              const { corporation, VP } = game.find(({ name }) => name === player) || {};
 
-            return corporation && VP
-              ? html`
-                  <div class="last-games__cell ${isWinner(game, player) ? "winner" : ""}">
-                    <div class="last-games__corp">${corporation || "-"}</div>
-                    <div class="last-games__vp">${VP || "-"}</div>
-                  </div>
-                `
-              : html` <div class="last-games__cell">-</div> `;
-          })}
-        </div>
-      `
-    )}
-  </div>
-`;
+              return corporation && VP
+                ? html`
+                    <div class="last-games__cell ${isWinner(game, player) ? "winner" : ""}">
+                      <div class="last-games__corp">${corporation || "-"}</div>
+                      <div class="last-games__vp">${VP || "-"}</div>
+                    </div>
+                  `
+                : html` <div class="last-games__cell">-</div> `;
+            })}
+          </div>
+        `
+      )}
+    </div>
+  `;
 }
 
 export function PlayersWinstatWidget() {
