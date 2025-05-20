@@ -21,6 +21,10 @@
       import { LastGamesWidget, PlayersWinstatWidget, TopScoreWidget, CorporationsWidget } from "./scripts/widgets.js";
       import { games } from "./scripts/state.js";
 
+      function SignIn() {
+        return html`<a href="${config.apiUrl}/auth/signin?callbackUrl=${encodeURIComponent(window.location.origin + "/mars-stats--preact/")}">Sign in</a>`;
+      }
+
       async function isAuthenticated() {
         const response = await fetch(`${config.apiUrl}/is-authenticated`, {
           credentials: "include",
@@ -49,11 +53,15 @@
       render(html`<${PlayersWinstatWidget} />`, document.getElementById("playersWinstat"));
       render(html`<${TopScoreWidget} games=${games} />`, document.getElementById("topScore"));
       render(html`<${CorporationsWidget} />`, document.getElementById("corporations"));
+      if (!(await isAuthenticated())) {
+        render(html`<${SignIn} />`, document.getElementById("btn-auth"));
+      }
     </script>
   </head>
   <body>
     <div class="app">
       <div class="logo"></div>
+      <div id="btn-auth"></div>
       <div class="grid">
         <div style="grid-area: lastGames" class="grid__widget" id="lastGames">
           <!-- Last 3 games widget -->

@@ -65,6 +65,7 @@ a:hover {
   background-position: center;
   background-repeat: no-repeat;
   background-image: url("../assets/logo.webp");
+  min-height: 35px;
 }
 .text-content {
   font-size: 1.3em;
@@ -184,7 +185,7 @@ a:hover {
   border-radius: 0;
   background: rgba(100, 197, 166, 0.15);
 }
-.btn-plus {
+#btn-plus {
   margin-left: 16px;
   color: var(--primaryColor);
   font-size: 19px;
@@ -198,12 +199,17 @@ a:hover {
   transform: translateY(-50%);
   background-color: transparent;
 }
-.btn-plus:hover {
+#btn-plus:hover {
   color: var(--primaryHoverColor);
 }
-.btn-plus:focus-visible {
+#btn-plus:focus-visible {
   outline: var(--primaryActiveColor) auto 1px;
 }
 .position-rel {
   position: relative;
+}
+#btn-auth {
+  position: absolute;
+  right: 16px;
+  top: 16px;
 }

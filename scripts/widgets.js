@@ -3,11 +3,6 @@ import { html } from "./deps.js";
 import { getTopStats, getWinRate, getPlayers, getCorporations, isWinner, sortByWinRate, gamesWon, gamesPlayed } from "./stats-helpers.js";
 import { playersColors, primaryColor } from "./models.js";
 import { openModal } from "./new-game-form.js";
-import { config } from "./config.js";
-
-function SignIn() {
-  return html`<a href="${config.apiUrl}/auth/signin?callbackUrl=${encodeURIComponent(window.location.origin + "/mars-stats--preact/")}">Sign in</a>`;
-}
 
 export function LastGamesWidget(props) {
   const players = getPlayers();
@@ -18,7 +13,7 @@ export function LastGamesWidget(props) {
   return html`
     <div class="position-rel">
       <h3>Останні матчі</h3>
-      ${isAuthenticated ? html`<button class="btn-plus" onClick=${openModal}>+</button>` : SignIn()}
+      ${isAuthenticated ? html`<button id="btn-plus" onClick=${openModal}>+</button>` : ""}
     </div>
     <div class="last-games">
       <div class="last-games__row">
