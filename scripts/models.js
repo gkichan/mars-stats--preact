@@ -40,4 +40,12 @@ export const playersColors = {
   // [PlayerName.Alex]: primaryColor
 };
 
+export const playersNicknames = {
+  [PlayerName.Eugene]: 'duk1nator',
+  [PlayerName.Viktor]: 'Viktor75',
+  [PlayerName.Karina]: 'KirienaBlack',
+  [PlayerName.Oleh]: 'Oleh',
+  // [PlayerName.Alex]: primaryColor
+};
+
 export const primaryColor = 'rgb(100,197,166)';

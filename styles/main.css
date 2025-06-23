@@ -20,14 +20,14 @@ body {
   margin: 0;
   font-family: sans-serif;
   color: rgb(240, 243, 242);
-  background-image: url("../assets/app-bg.webp");
+  background-image: url('../assets/app-bg.webp');
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100vh;
 
   &::after {
-    content: "";
+    content: '';
     position: fixed;
     top: 0;
     left: 0;
@@ -64,7 +64,7 @@ a:hover {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../assets/logo.webp");
+  background-image: url('../assets/logo.webp');
   min-height: 35px;
 }
 .text-content {
@@ -75,7 +75,7 @@ a:hover {
 }
 .grid {
   display: grid;
-  grid-template-areas: "lastGames players topScore" "corporations corporations corporations";
+  grid-template-areas: 'lastGames players topScore' 'corporations corporations corporations';
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 8px;
   margin: 16px;
@@ -212,4 +212,36 @@ a:hover {
   position: absolute;
   right: 16px;
   top: 16px;
+}
+#loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading__content {
+  display: flex;
+  align-items: baseline;
+}
+.loading__text {
+  font-size: 1.2em;
+  color: var(--primaryColor);
+}
+.loading__dots {
+  width: 15px;
+  aspect-ratio: 4;
+  background: radial-gradient(circle closest-side, var(--primaryColor) 90%, #0000) 0 / calc(100% / 3) 100% space;
+  clip-path: inset(0 100% 0 0);
+  animation: l1 1s steps(4) infinite;
+}
+@keyframes l1 {
+  to {
+    clip-path: inset(0 -34% 0 0);
+  }
 }

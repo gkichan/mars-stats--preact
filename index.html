@@ -16,18 +16,18 @@
     <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.28.0/number-input.min.js"></script>
 
     <script type="module">
-      import { html, render } from "./scripts/deps.js";
-      import { config } from "./scripts/config.js";
-      import { LastGamesWidget, PlayersWinstatWidget, TopScoreWidget, CorporationsWidget } from "./scripts/widgets.js";
-      import { games } from "./scripts/state.js";
+      import { html, render } from './scripts/deps.js';
+      import { config } from './scripts/config.js';
+      import { LastGamesWidget, PlayersWinstatWidget, TopScoreWidget, CorporationsWidget } from './scripts/widgets.js';
+      import { games } from './scripts/state.js';
 
       function SignIn() {
-        return html`<a href="${config.apiUrl}/auth/signin?callbackUrl=${encodeURIComponent(window.location.origin + "/mars-stats--preact/")}">Sign in</a>`;
+        return html`<a href="${config.apiUrl}/auth/signin?callbackUrl=${encodeURIComponent(window.location.origin + '/mars-stats--preact/')}">Sign in</a>`;
       }
 
       async function isAuthenticated() {
         const response = await fetch(`${config.apiUrl}/is-authenticated`, {
-          credentials: "include",
+          credentials: 'include',
         });
         const responseData = await response.json();
         return responseData.authenticated;
@@ -38,23 +38,25 @@
         const responseData = await response.json();
 
         if (!response.ok) {
-          throw new Error(responseData.error || "An error occurred");
+          throw new Error(responseData.error || 'An error occurred');
         }
 
         games.value = responseData;
       } catch (error) {
+        document.getElementById('loading').style.display = 'none';
         console.error(error);
         games.value = [];
-        alert(error || "Failed to get games list. Please try again.");
+        alert(error || 'Failed to get games list. Please try again.');
       }
 
       // Rendering
-      render(html`<${LastGamesWidget} games=${games} isAuthenticated=${await isAuthenticated()} />`, document.getElementById("lastGames"));
-      render(html`<${PlayersWinstatWidget} />`, document.getElementById("playersWinstat"));
-      render(html`<${TopScoreWidget} games=${games} />`, document.getElementById("topScore"));
-      render(html`<${CorporationsWidget} />`, document.getElementById("corporations"));
+      document.getElementById('loading').style.display = 'none';
+      render(html`<${LastGamesWidget} games=${games} isAuthenticated=${await isAuthenticated()} />`, document.getElementById('lastGames'));
+      render(html`<${PlayersWinstatWidget} />`, document.getElementById('playersWinstat'));
+      render(html`<${TopScoreWidget} games=${games} />`, document.getElementById('topScore'));
+      render(html`<${CorporationsWidget} />`, document.getElementById('corporations'));
       if (!(await isAuthenticated())) {
-        render(html`<${SignIn} />`, document.getElementById("btn-auth"));
+        render(html`<${SignIn} />`, document.getElementById('btn-auth'));
       }
     </script>
   </head>
@@ -75,6 +77,13 @@
         <div style="grid-area: corporations" class="grid__widget" id="corporations">
           <!-- Corporations widget -->
         </div>
+      </div>
+    </div>
+
+    <div id="loading">
+      <div class="loading__content">
+        <span class="loading__text">Завантаження</span>
+        <div class="loading__dots"></div>
       </div>
     </div>
 

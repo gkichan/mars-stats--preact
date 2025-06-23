@@ -113,7 +113,9 @@ class Modal extends Component {
                     ${getPlayers().map((player) => html`<cds-dropdown-item value=${player}>${player}</cds-dropdown-item>`)}
                   </cds-dropdown>
                   <cds-dropdown name="${this.formFields.corporation(i)}" title-text="Корпорація ${i}">
-                    ${getCorporations().map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
+                    ${getCorporations()
+                      .sort()
+                      .map((corporation) => html`<cds-dropdown-item value=${corporation}>${corporation}</cds-dropdown-item>`)}
                   </cds-dropdown>
                   <cds-number-input name="${this.formFields.vp(i)}" value="0" max="999" min="0" label="VP ${i}" size="md" hide-steppers></cds-number-input>
                 </div>

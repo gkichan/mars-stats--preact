@@ -1,5 +1,5 @@
-import { PlayerName, Corporation } from "./models.js";
-import { games } from "./state.js";
+import { PlayerName, Corporation } from './models.js';
+import { games } from './state.js';
 
 export function getPlayers() {
   return Object.values(PlayerName);
