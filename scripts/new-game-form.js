@@ -1,13 +1,13 @@
-"use strict";
-import { html, render, Component } from "./deps.js";
-import { getPlayers, getCorporations } from "./stats-helpers.js";
-import { config } from "./config.js";
-import { games } from "./state.js";
+'use strict';
+import { html, render, Component } from './deps.js';
+import { getPlayers, getCorporations } from './stats-helpers.js';
+import { config } from './config.js';
+import { games } from './state.js';
 
-const newGameModal = "newGameModal";
+const newGameModal = 'newGameModal';
 
 export function openModal() {
-  const cdsModalPlaceholder = document.getElementById("cds-modal-placeholder");
+  const cdsModalPlaceholder = document.getElementById('cds-modal-placeholder');
   render(html`<${Modal} />`, cdsModalPlaceholder);
 
   toggleModal();
@@ -17,7 +17,7 @@ const playersCounterArray = Array.from({ length: config.playersInGame }, (_, i) 
 
 function toggleModal() {
   const modalContainer = document.getElementById(newGameModal);
-  modalContainer.toggleAttribute("open");
+  modalContainer.toggleAttribute('open');
 }
 
 class Modal extends Component {
@@ -34,15 +34,15 @@ class Modal extends Component {
   }
 
   getFormElement() {
-    return document.getElementById("newGameForm");
+    return document.getElementById('newGameForm');
   }
 
   initCdsForm() {
     const form = this.getFormElement();
     const button = form.querySelector('cds-modal-footer-button[type="submit"]');
 
-    button.addEventListener("click", () => {
-      form.dispatchEvent(new SubmitEvent("submit"));
+    button.addEventListener('click', () => {
+      form.dispatchEvent(new SubmitEvent('submit'));
     });
   }
 
@@ -53,7 +53,7 @@ class Modal extends Component {
     dropdownsToReset.forEach((element) => {
       const selector = `cds-dropdown[title-text="${element}"]`;
       const dropdown = form.querySelector(selector);
-      dropdown?.setAttribute("value", "");
+      dropdown?.setAttribute('value', '');
     });
   }
 
@@ -64,26 +64,26 @@ class Modal extends Component {
     const mappedData = this.mapFormDataToGameObject(data);
 
     try {
+      toggleModal();
       const response = await fetch(`${config.apiUrl}/games`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(mappedData),
-        credentials: "include",
+        credentials: 'include',
       });
 
       const responseData = await response.json();
       if (!response.ok) {
-        throw new Error(responseData.error || "An error occurred");
+        throw new Error(responseData.error || 'An error occurred');
       }
 
       games.value = responseData;
       this.manualResetFields();
-      toggleModal();
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert(error || "Failed to save the game. Please try again.");
+      console.error('Error submitting form:', error);
+      alert(error || 'Failed to save the game. Please try again.');
     }
   }
 
