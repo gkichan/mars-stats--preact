@@ -73,6 +73,9 @@ a:hover {
 .ta-center {
   text-align: center;
 }
+.white-space-nowrap {
+  white-space: nowrap;
+}
 .grid {
   display: grid;
   grid-template-areas: 'lastGames players topScore' 'corporations corporations corporations';

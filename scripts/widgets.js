@@ -112,7 +112,7 @@ function Column({ name, color, winRate, won, played }) {
       <div class="text-content ta-center" style="color: ${color}">${name}</div>
       <div class="column__data-viz" style="background-color: ${color}; height: ${height}px"></div>
       <div class="text-content">${winRate}%</div>
-      <div class="text-content">${won} / ${played}</div>
+      <div class="text-content white-space-nowrap">${won} / ${played}</div>
     </div>
   `;
 }
