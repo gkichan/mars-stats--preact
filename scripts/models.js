@@ -30,6 +30,8 @@ export const Corporation = {
   Beginner: 'Beginner',
   Astrodrill: 'Astrodrill',
   PharmacyUnion: 'Pharmacy Union',
+  Vitor: 'Vitor',
+  CheungShingMars: 'Cheung Shing Mars'
 };
 
 export const playersColors = {
