@@ -79,7 +79,7 @@ a:hover {
 .grid {
   display: grid;
   grid-template-areas: 'lastGames players topScore' 'corporations corporations corporations';
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1.5fr;
   grid-gap: 8px;
   margin: 16px;
   flex-grow: 1;
@@ -168,6 +168,16 @@ a:hover {
 .grid__widget .top-score__number {
   font-size: 3em;
   font-weight: bold;
+}
+.grid__widget .top-corps-by-player .top-corps-by-player__row {
+  display: flex;
+  align-items: center;
+  grid-gap: 4px;
+  justify-content: space-between;
+  width: 90%;
+}
+.grid__widget .top-corps-by-player .text-content {
+  font-size: 1.1em;
 }
 @media (max-width: 1279px) {
   .grid {

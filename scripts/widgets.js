@@ -62,6 +62,7 @@ export function PlayersWinstatWidget() {
   `;
 }
 
+// LEGACY: this widget is not used anywhere, but I want to keep it for now, maybe I'll add it later
 export function TopScoreWidget(props) {
   const games = props.games.value;
   const { topPlayer, topScore } = getTopStats(games);
@@ -102,6 +103,55 @@ export function CorporationsWidget() {
   `;
 }
 
+export function TopCorpsByPlayerWidget(props) {
+  const stats = {};
+
+  for (const game of props.games.value) {
+    if (!Array.isArray(game) || game.length === 0) continue;
+    const maxVP = Math.max(...game.map(p => Number(p.VP) || 0));
+    const winners = new Set(game.filter(p => Number(p.VP) === maxVP).map(p => p.name));
+
+    for (const p of game) {
+      const player = p.name;
+      const corp = p.corporation;
+      if (!player || !corp) continue;
+
+      stats[player] ??= {};
+      stats[player][corp] ??= { games: 0, wins: 0 };
+      stats[player][corp].games += 1;
+      if (winners.has(player)) stats[player][corp].wins += 1;
+    }
+  }
+
+  const result = {};
+  for (const player of Object.keys(stats)) {
+    result[player] = Object.entries(stats[player])
+      .map(([corporation, { games, wins }]) => ({
+        corporation,
+        games,
+        wins,
+        winRate: games > 0 ? (wins / games).toFixed(2) : 0,
+      }))
+      .sort((a,b) => b.winRate - a.winRate || b.games - a.games || b.corporation.localeCompare(a.corporation))
+      .slice(0, 5);
+  }
+
+  return html`
+    <h3>Топ корпорації гравців</h3>
+    <div class="chart-box top-corps-by-player">
+      ${getPlayers().map((player) => {
+        return html`
+          <${PlayersTopCorporations}
+            name=${playersNicknames[player]}
+            color=${playersColors[player]}
+            corporations=${result[player] || []}
+          />
+        `;
+      })}
+    </div>
+  `;
+};
+
 // Reusable components
 
 function Column({ name, color, winRate, won, played }) {
@@ -113,6 +163,20 @@ function Column({ name, color, winRate, won, played }) {
       <div class="column__data-viz" style="background-color: ${color}; height: ${height}px"></div>
       <div class="text-content">${winRate}%</div>
       <div class="text-content white-space-nowrap">${won} / ${played}</div>
+    </div>
+  `;
+}
+
+function PlayersTopCorporations({ name, color, corporations }) {
+  return html`
+    <div class="column">
+      <div class="text-content ta-center" style="color: ${color}">${name}</div>
+      ${corporations.map((corp) => html`
+        <div class="top-corps-by-player__row">
+          <div class="text-content" style="color: ${primaryColor}">${corp.corporation}:</div>
+          <div class="text-content ta-center">${(corp.winRate*100).toFixed(0)}% <br /> ${corp.wins} / ${corp.games} </div>
+        </div>
+      `)}
     </div>
   `;
 }

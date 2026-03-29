@@ -2,7 +2,7 @@ export const PlayerName = {
   Eugene: 'Женя',
   Karina: 'Каріна',
   Viktor: 'Віктор',
-  Oleh: 'Олег',
+  // Oleh: 'Олег',
   // Alex: 'Саша'
 };
 
@@ -31,7 +31,7 @@ export const Corporation = {
   Astrodrill: 'Astrodrill',
   PharmacyUnion: 'Pharmacy Union',
   Vitor: 'Vitor',
-  CheungShingMars: 'Cheung Shing',
+  CheungShingMars: 'Cheung Shing Mars',
   ValleyTrust: 'Valley Trust',
   RobinsonIndustries: 'Robinson Industries'
 };
@@ -40,7 +40,7 @@ export const playersColors = {
   [PlayerName.Eugene]: 'rgb(221,21,64)',
   [PlayerName.Viktor]: 'rgb(39,148,244)',
   [PlayerName.Karina]: 'rgb(74,169,66)',
-  [PlayerName.Oleh]: 'rgb(147,114,167)',
+  // [PlayerName.Oleh]: 'rgb(147,114,167)',
   // [PlayerName.Alex]: primaryColor
 };
 
@@ -48,7 +48,7 @@ export const playersNicknames = {
   [PlayerName.Eugene]: 'duk1nator',
   [PlayerName.Viktor]: 'Viktor75',
   [PlayerName.Karina]: 'KirienaBlack',
-  [PlayerName.Oleh]: 'Oleh',
+  // [PlayerName.Oleh]: 'Oleh',
   // [PlayerName.Alex]: primaryColor
 };
 
