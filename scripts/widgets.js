@@ -8,7 +8,7 @@ export function LastGamesWidget(props) {
   const players = getPlayers();
   const games = props.games.value;
   const last3Games = games.slice(-3).reverse();
-  const isAuthenticated = props.isAuthenticated;
+  const isAuthenticated = props.isAuthenticated.value;
 
   return html`
     <div class="position-rel">
