@@ -19,33 +19,10 @@
       import { html, render } from './scripts/deps.js';
       import { config } from './scripts/config.js';
       import { LastGamesWidget, PlayersWinstatWidget, CorporationsWidget, TopCorpsByPlayerWidget } from './scripts/widgets.js';
-      import { games, isAuthenticated } from './scripts/state.js';
+      import { games } from './scripts/state.js';
 
       function SignIn() {
-        if (!isAuthenticated.value) {
-          return html`<a onClick=${EnterPass}>Sign in</a>`;
-        }
-        return html``;
-      }
-
-      function EnterPass() {
-        const pass = prompt('Enter password to sign in:');
-        sha256(pass).then(hash => {
-          if (hash === config.passHash) {
-            isAuthenticated.value = true;
-          } else {
-            alert('Incorrect password. Please try again.');
-          }
-        });
-      }
-
-      async function sha256(message) {
-        const msgBuffer = new TextEncoder().encode(message);                    
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));                     
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        
-        return hashHex;
+        return html`<a href="${config.apiUrl}/sign-in">Sign in</a>`;
       }
 
       try {
@@ -66,7 +43,7 @@
 
       // Rendering
       document.getElementById('loading').style.display = 'none';
-      render(html`<${LastGamesWidget} games=${games} isAuthenticated=${isAuthenticated} />`, document.getElementById('lastGames'));
+      render(html`<${LastGamesWidget} games=${games} />`, document.getElementById('lastGames'));
       render(html`<${PlayersWinstatWidget} />`, document.getElementById('playersWinstat'));
       render(html`<${TopCorpsByPlayerWidget} games=${games} />`, document.getElementById('topScore'));
       render(html`<${CorporationsWidget} />`, document.getElementById('corporations'));

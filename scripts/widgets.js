@@ -8,12 +8,11 @@ export function LastGamesWidget(props) {
   const players = getPlayers();
   const games = props.games.value;
   const last3Games = games.slice(-3).reverse();
-  const isAuthenticated = props.isAuthenticated.value;
 
   return html`
     <div class="position-rel">
       <h3>Останні матчі</h3>
-      ${isAuthenticated ? html`<button id="btn-plus" onClick=${openModal}>+</button>` : ''}
+      <button id="btn-plus" onClick=${openModal}>+</button>
     </div>
     <div class="last-games">
       <div class="last-games__row">
