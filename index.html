@@ -21,10 +21,6 @@
       import { LastGamesWidget, PlayersWinstatWidget, CorporationsWidget, TopCorpsByPlayerWidget } from './scripts/widgets.js';
       import { games } from './scripts/state.js';
 
-      function SignIn() {
-        return html`<a href="${config.apiUrl}/sign-in">Sign in</a>`;
-      }
-
       try {
         const response = await fetch(`${config.apiUrl}/games`);
         const responseData = await response.json();
@@ -47,13 +43,11 @@
       render(html`<${PlayersWinstatWidget} />`, document.getElementById('playersWinstat'));
       render(html`<${TopCorpsByPlayerWidget} games=${games} />`, document.getElementById('topScore'));
       render(html`<${CorporationsWidget} />`, document.getElementById('corporations'));
-      render(html`<${SignIn} />`, document.getElementById('btn-auth'));
     </script>
   </head>
   <body>
     <div class="app">
       <div class="logo"></div>
-      <div id="btn-auth"></div>
       <div class="grid">
         <div style="grid-area: lastGames" class="grid__widget" id="lastGames">
           <!-- Last 3 games widget -->

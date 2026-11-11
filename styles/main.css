@@ -221,11 +221,6 @@ a:hover {
 .position-rel {
   position: relative;
 }
-#btn-auth {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-}
 #loading {
   position: absolute;
   top: 0;
